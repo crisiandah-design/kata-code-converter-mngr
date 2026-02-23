@@ -1,0 +1,51 @@
+export const TRANSFORM_RULES = {
+	COBOL: {
+		PERFORM: 'Perform',
+		IF: 'If',
+		DISPLAY: 'Display',
+		VAR_DECLARATION: 'VarDeclaration',
+		ASSIGNMENT: 'Assignment',
+		CALL: 'Call',
+		END_PERFORM: 'EndPerform',
+		END_IF: 'EndIf',
+		ADD: 'Add',
+		ELSE: 'Else',
+	},
+	DELPHI: {
+		FOR: 'For',
+		IF: 'If',
+		ELSE: 'Else',
+		END_IF: 'EndIf',
+		DISPLAY: 'Display',
+		VAR_DECLARATION: 'VarDeclaration',
+		ASSIGNMENT: 'Assignment',
+		CALL: 'Call',
+		END: 'End',
+	},
+};
+
+export const DESCRIPTION_RULES = {
+	COBOL: {
+		Perform: 'Loop (PERFORM/END-PERFORM)',
+		If: 'Conditional (IF/END-IF)',
+		DISPLAY: 'Output / DISPLAY',
+		VAR_DECLARATION: 'Variable declaration (PIC)',
+		ASSIGNMENT: 'Assignment / MOVE',
+		CALL: 'Procedure / CALL',
+		END_IF: 'End If',
+		END_PERFORM: 'End Perform',
+		ADD: 'Addition / ADD',
+		Else: 'Else',
+	},
+	DELPHI: {
+		FOR: 'For loop',
+		IF: 'If statement',
+		ELSE: 'Else',
+		END_IF: 'End If',
+		DISPLAY: 'Output / Writeln/Write',
+		VAR_DECLARATION: 'Variable declaration (var)',
+		ASSIGNMENT: 'Assignment (:=)',
+		CALL: 'Procedure / Call',
+		END: 'End block',
+	},
+};

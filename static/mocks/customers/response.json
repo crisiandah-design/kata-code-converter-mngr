@@ -1,0 +1,60 @@
+{
+	"backendResponses": {
+		"success": {
+			"codigoEstado": 0,
+			"cut": null,
+			"data": {
+				"active": true,
+				"customProperties": null,
+				"customerIdTypeId": 2,
+				"customerIdTypeName": "Cédula de Ciudadanía",
+				"customerLevelId": 2,
+				"customerLevelName": "2 Cliente Cluster2",
+				"description": null,
+				"dob": "0001-01-03T05:00:00.000+0000",
+				"eMail": "stevenrodrod@gmail.com",
+				"extRef": "123456",
+				"firstName": "Fulanito",
+				"id": 4404,
+				"isCustomerGroup": false,
+				"isMemberOfGroups": false,
+				"languageCode": "es",
+				"lastName": "D",
+				"name": "D Fulanito",
+				"notes": "",
+				"partOfQapp": false,
+				"personalId": "123456",
+				"pictureAttachmentId": 0,
+				"sex": "MALE",
+				"telNumber1": "",
+				"telNumber2": ""
+			},
+			"descripcionEstado": "Consulta Exitosa"
+		},
+		"conflict": {
+			"codigoEstado": 0,
+			"descripcionEstado": "Registro no encontrado",
+			"cut": null,
+			"data": null
+		},
+		"internal": {
+			"codigoEstado": 500,
+			"cut": "20320ZZZZZ0000DOF72429102020112026fc26b",
+			"data": null,
+			"descripcionEstado": "Error general en el consumo del servicio cache de qflow."
+		}
+	},
+	"operationResponses": {
+		"success": {
+			"status": 200,
+			"message": "Ok",
+			"data": {
+				"identification": "123456",
+				"firstName": "Fulanito",
+				"lastName": "D",
+				"isActive": true,
+				"email": ""
+			}
+		}
+	}
+}

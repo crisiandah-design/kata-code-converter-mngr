@@ -1,0 +1,17 @@
+{
+	"vars": {
+		"APPLICATION_PORT": "80",
+		"NODE_ENV": "PRD",
+		"API_PATH": "/my-context",
+		"CUSTOMER_URI": "",
+		"BUCKET": "",
+		"CERT": "",
+		"KEY": "",
+		"REJECT_UNAUTHORIZED": "false",
+		"MASK_FIELDS": "x-api-key,api-key,custIdentNum",
+		"DEBUG": "bdb:*",
+		"API_EVENT_HOST": "http://localhost:9200",
+		"API_EVENT_PATH": "/my-path-events/events",
+		"EVENT_INDEX": "my-index"
+	}
+}

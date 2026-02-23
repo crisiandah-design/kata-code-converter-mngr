@@ -1,0 +1,20 @@
+name: Plan
+on:
+  pull_request:
+    branches:
+      - qa
+      - master
+      - staging
+
+jobs:
+  requirements-backend:
+    name: Plan
+    uses: bancodebogota/bbog-dt-pipeline/.github/workflows/requirements_nodejs_backend.yml@release_v1
+    with:
+      test-command: >
+        npm run test
+      path-environments-variables: >
+        pipeline/qa-env.json
+        pipeline/stg-env.json
+        pipeline/prod-env.json
+    secrets: inherit

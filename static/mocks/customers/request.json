@@ -1,0 +1,11 @@
+{
+	"backendRequest": {
+		"success": {
+			"customIdentNum": "123456",
+			"customIdentType": "CC"
+		}
+	},
+	"operationRequest": {
+		"success": {}
+	}
+}

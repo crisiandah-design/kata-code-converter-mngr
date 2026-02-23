@@ -1,0 +1,46 @@
+name: Deploy QA
+on:
+  push:
+    branches: [ qa ]
+
+jobs:
+  delete_this_job:
+    runs-on: ubuntu-latest
+    name: Delete this job
+    steps:
+      - name: readme
+        shell: bash
+        id: long-lived-branch
+        run: |
+          echo "Uncomment the 'deploy' job"
+
+#   deploy:
+#     name: Deploy QA
+#     uses: bancodebogota/bbog-dt-pipeline/.github/workflows/deploy_nodejs_backend.yml@release_v1
+#     with:
+#       version: $(node -p "require('./package.json').version")
+#       description-for-version: $(node -p "require('./package.json').version")
+#       path-environments-variables: >
+#         pipeline/qa-env.json
+#         pipeline/stg-env.json
+#         pipeline/prod-env.json
+#       function-name: 'function-name'
+#       files-to-compress: 'node_modules static build index.js package.json'
+#       prepare-files: 'cp lambda/index.js index.js'
+#       function-handler: index.handler
+#       function-memory-size: 128
+#       function-runtime: nodejs14.x
+#       path-to-env-vars: pipeline/qa-env.json
+#       environment: qa
+#       service-type: 'lambda'
+#       build-command: >
+#         npm i &&
+#         npm run build &&
+#         rm -r node_modules/ &&
+#         npm ci --only=prod
+#     secrets:
+#       DIG_READER_GITHUB_ACCESS_TOKEN: ${{ secrets.DIG_READER_GITHUB_ACCESS_TOKEN }}
+#       ARTIFACTORY_READER_USER: ${{ secrets.ARTIFACTORY_READER_USER }}
+#       ARTIFACTORY_READER_API_KEY: ${{ secrets.ARTIFACTORY_READER_API_KEY }}
+#       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+#       AWS_ROLE_DEPLOY_BACKEND: ${{ secrets.AWS_ROLE_DEPLOY_BACKEND }}

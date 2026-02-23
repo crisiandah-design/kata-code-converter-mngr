@@ -1,0 +1,257 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Kata Code Converter API",
+    "version": "1.0.0",
+    "description": "Servicio que transforma código entre lenguajes (p.ej. COBOL -> JAVA, PYTHON, NODE, GO)."
+  },
+  "servers": [
+    {
+      "url": "https://{host}{basePath}",
+      "variables": {
+        "host": {
+          "default": "localhost:8001"
+        },
+        "basePath": {
+          "default": "/kata-senior"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/V1/transform": {
+      "post": {
+        "tags": ["transform"],
+        "summary": "Transforma código de un lenguaje origen a uno destino",
+        "operationId": "transformCode",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/X-RqUID"
+          },
+          {
+            "$ref": "#/components/parameters/X-IPAddr"
+          },
+          {
+            "$ref": "#/components/parameters/x-api-key"
+          }
+        ],
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/transformRequest"
+              },
+              "examples": {
+                "cobolToJava": {
+                  "value": {
+                    "sourceLanguage": "COBOL",
+                    "targetLanguage": "JAVA",
+                    "code": "IDENTIFICATION DIVISION.\nPROGRAM-ID. SUM-EXAMPLE.\n\nDATA DIVISION.\nWORKING-STORAGE SECTION.\n01 I PIC 9(2) VALUE 0.\n01 TOTAL PIC 9(4) VALUE 0.\n01 LIMIT PIC 9(2) VALUE 5.\n\nPROCEDURE DIVISION.\nPERFORM VARYING I FROM 1 BY 1 UNTIL I > LIMIT\n    ADD I TO TOTAL\nEND-PERFORM\nIF TOTAL > 10 THEN\n    DISPLAY \"TOTAL MAYOR A 10: \" TOTAL\nELSE\n    DISPLAY \"TOTAL MENOR O IGUAL A 10: \" TOTAL\nEND-IF\nSTOP RUN."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transformación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/transformResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generalError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generalError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "transformDetail": {
+        "type": "object",
+        "description": "Detalle de reglas aplicadas en la transformación",
+        "properties": {
+          "ruleName": {
+            "type": "string",
+            "example": "Perform"
+          },
+          "description": {
+            "type": "string",
+            "example": "Loop (PERFORM/END-PERFORM)"
+          },
+          "line": {
+            "type": "integer",
+            "format": "int32",
+            "example": 12
+          }
+        }
+      },
+      "transformData": {
+        "type": "object",
+        "description": "Resultado de la transformación",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Código transformado"
+          },
+          "detail": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/transformDetail"
+            }
+          }
+        },
+        "required": ["code"]
+      },
+      "transformResponse": {
+        "type": "object",
+        "description": "Respuesta estándar del servicio de transformación",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "example": 200
+          },
+          "message": {
+            "type": "string",
+            "example": "Ok"
+          },
+          "data": {
+            "$ref": "#/components/schemas/transformData"
+          }
+        },
+        "required": ["status", "message", "data"]
+      },
+      "transformRequest": {
+        "type": "object",
+        "description": "Solicitud para transformar código",
+        "properties": {
+          "sourceLanguage": {
+            "type": "string",
+            "enum": ["COBOL", "DELPHI", "C"],
+            "example": "COBOL"
+          },
+          "targetLanguage": {
+            "type": "string",
+            "enum": ["JAVA", "PYTHON", "NODE", "GO"],
+            "example": "JAVA"
+          },
+          "code": {
+            "type": "string",
+            "description": "Código fuente a transformar"
+          }
+        },
+        "required": ["sourceLanguage", "targetLanguage", "code"]
+      },
+      "generalError": {
+        "type": "object",
+        "description": "Error estándar",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "example": 500
+          },
+          "message": {
+            "type": "string",
+            "example": "Internal Server Error"
+          },
+          "data": {
+            "type": "string",
+            "description": "Detalle adicional"
+          }
+        },
+        "required": ["status", "message"]
+      }
+    },
+    "securitySchemes": {
+      "api_key": {
+        "type": "apiKey",
+        "name": "x-api-key",
+        "in": "header"
+      }
+    },
+    "parameters": {
+      "X-RqUID": {
+        "style": "simple",
+        "explode": false,
+        "name": "X-RqUID",
+        "description": "UUID generado. - Identificador de la transacción",
+        "schema": {
+          "maxLength": 36,
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "type": "string",
+          "example": "bb82a9cd-076e-4f69-9d6f-d7b0681a0346"
+        },
+        "in": "header",
+        "required": true
+      },
+      "X-IPAddr": {
+        "style": "simple",
+        "explode": false,
+        "name": "X-IPAddr",
+        "description": "Dirección IP del dispositivo desde donde se inicia la transacción Formato IPV4",
+        "schema": {
+          "maxLength": 15,
+          "minLength": 7,
+          "pattern": "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$",
+          "type": "string",
+          "example": "160.80.70.123"
+        },
+        "in": "header",
+        "required": true
+      },
+      "x-api-key": {
+        "style": "simple",
+        "explode": false,
+        "name": "x-api-key",
+        "description": "Llave de API para autorización",
+        "schema": {
+          "type": "string"
+        },
+        "in": "header",
+        "required": true
+      }
+    }
+  },
+  "security": [
+    {
+      "api_key": []
+    }
+  ],
+  "x-amazon-apigateway-request-validators": {
+    "Validar cuerpo, parámetros de cadena de consulta y encabezados": {
+      "validateRequestParameters": true,
+      "validateRequestBody": true
+    }
+  }
+}

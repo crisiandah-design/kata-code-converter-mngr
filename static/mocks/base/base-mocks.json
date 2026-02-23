@@ -1,0 +1,42 @@
+{
+	"headers": {
+		"request": {
+			"X-RqUID": "bb82a9cd-076e-4f69-9d6f-d7b0681a0346",
+			"X-Channel": "Web",
+			"X-Name": "BancaVirtual",
+			"X-CustIdentType": "CC",
+			"X-CustIdentNum": "123456",
+			"X-IPAddr": "127.0.0.1",
+			"X-api-key": "123456789"
+		},
+		"responseApiHeaders": {
+			"Content-Type": "application/json"
+		}
+	},
+	"customRequest": {
+		"body": {},
+		"params": {
+			"custIdentNum": "123456",
+			"custIdentType": "CC"
+		},
+		"additionaInfo": {
+			"address": null,
+			"phone": ""
+		},
+		"headers": {
+			"x-rquid": "bb82a9cd-076e-4f69-9d6f-d7b0681a0346",
+			"x-custidenttype": "CC",
+			"x-custidentnum": "123456",
+			"x-name": "BancaVirtual",
+			"x-channel": "Web",
+			"x-ipaddr": "127.0.0.1",
+			"x-api-key": "********6789",
+			"user-agent": "PostmanRuntime/7.29.0",
+			"accept": "*/*",
+			"postman-token": "e46ebe9a-7f8f-4770-8ccb-a8b71628c7f9",
+			"host": "localhost:8097",
+			"accept-encoding": "gzip, deflate, br",
+			"connection": "keep-alive"
+		}
+	}
+}
