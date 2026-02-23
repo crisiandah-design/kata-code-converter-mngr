@@ -16,7 +16,7 @@ const ValidatorRouter = Router();
 	morgan('tiny'),
 	express.json(),
 	express.static(path.join(__dirname, CONFIG.RESOURCE)),
-	//new OpenApiValidator(FileUtility.get(CONFIG.OAS.FILE)).match(),
+	new OpenApiValidator(FileUtility.get(CONFIG.OAS.FILE)).match(),
 ].forEach((middleware) => ValidatorRouter.use(CONFIG.CONTEXT, middleware));
 
 ValidatorRouter.use(

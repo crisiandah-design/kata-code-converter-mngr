@@ -1,0 +1,13 @@
+services:
+  booksdb:
+    image: mysql:8.0
+    container_name: backoffice
+    ports:
+      - "3308:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: Prueba123#
+      MYSQL_DATABASE: BBOG_KATA_CODE_CONVERTER
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: 123456
