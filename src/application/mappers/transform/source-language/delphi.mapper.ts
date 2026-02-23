@@ -106,7 +106,6 @@ export class DelphiMapper implements ISourceLanguageMapper {
 		root.children.push(node);
 	}
 
-	// --- Simple Delphi detectors ---
 	private isFor(line: string): boolean {
 		return this.RE_FOR.test(line);
 	}
@@ -132,10 +131,8 @@ export class DelphiMapper implements ISourceLanguageMapper {
 		return this.RE_CALL.test(line);
 	}
 
-	// --- Handlers ---
 	private handleFor(line: string, state: ParserState, root?: IRNode): boolean {
 		if (!root) return false;
-		// parse: for I := 1 to LIMIT do
 		const match = line.match(this.RE_FOR_LOOP);
 		const iterator = match ? match[1] : 'i';
 		const from = match ? Number(match[2]) : 0;
@@ -152,7 +149,6 @@ export class DelphiMapper implements ISourceLanguageMapper {
 	}
 
 	private handleIf(line: string, state: ParserState, root?: IRNode): boolean {
-		// parse: if LEFT OP RIGHT then
 		const match = line.match(this.RE_IF_COND);
 		const left = match ? match[1].trim() : 'condLeft';
 		const operator = match ? match[2] : '>';
@@ -179,7 +175,6 @@ export class DelphiMapper implements ISourceLanguageMapper {
 	}
 
 	private handleEnd(_line: string, state: ParserState): boolean {
-		// finish current block
 		if (state.currentIf && state.currentIfElse) {
 			state.currentIfElse = false;
 			state.currentIf = null;
@@ -194,11 +189,9 @@ export class DelphiMapper implements ISourceLanguageMapper {
 
 	private handleWriteln(line: string, state: ParserState, root?: IRNode): boolean {
 		if (!root) return false;
-		// parse Writeln('text', VAR)
 		const match = line.match(this.RE_WRITELN_FULL);
 		if (!match) return false;
 		const inside = match[1];
-		// split by comma not inside quotes
 		const parts: string[] = [];
 		let cur = '';
 		let inQuotes = false;
@@ -219,7 +212,6 @@ export class DelphiMapper implements ISourceLanguageMapper {
 			.slice(1)
 			.map((p) => p.replace(/;$/, '').trim())
 			.filter(Boolean);
-		// remove surrounding quotes if present
 		if (/^'.*'$/.test(text)) text = text.slice(1, -1);
 		const node: IRNode = { type: 'PrintStatement', value: { text, args } };
 		this.push(node, state, root);
@@ -228,15 +220,12 @@ export class DelphiMapper implements ISourceLanguageMapper {
 
 	private handleAssignment(line: string, state: ParserState, root?: IRNode): boolean {
 		if (!root) return false;
-		// parse: TARGET := expr;
 		const match = line.match(this.RE_ASSIGN_FULL);
 		if (!match) return false;
 		const target = match[1];
 		const expr = match[2].trim();
-		// detect addition: A + B
 		const addMatch = expr.match(this.RE_ADD);
 		if (addMatch) {
-			// If it's like TOTAL + I and target is TOTAL, produce ADD
 			const operands = [addMatch[2]];
 			const node: IRNode = {
 				type: 'AssignmentStatement',
@@ -245,7 +234,6 @@ export class DelphiMapper implements ISourceLanguageMapper {
 			this.push(node, state, root);
 			return true;
 		}
-		// numeric literal?
 		const num = /^\d+$/.test(expr) ? Number(expr) : expr.replace(/;$/, '');
 		const node: IRNode = { type: 'AssignmentStatement', value: { target, source: num } };
 		this.push(node, state, root);
@@ -254,9 +242,7 @@ export class DelphiMapper implements ISourceLanguageMapper {
 
 	private handleVarDecl(line: string, _state: ParserState, root?: IRNode): boolean {
 		if (!root) return false;
-		// handle 'var' marker or 'I, TOTAL, LIMIT: Integer;'
 		if (this.RE_VAR_MARKER.test(line)) return true;
-		// capture names before ':'
 		const match = line.match(this.RE_VAR_DECL);
 		if (!match) return false;
 		const names = match[1]
